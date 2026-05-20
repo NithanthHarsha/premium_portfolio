@@ -21,13 +21,13 @@ const Contact = () => {
     e.preventDefault();
     setStatus('Sending...');
 
-    // Web3Forms API logic
-    const object = {
-      ...formData,
-      // NOTE: Replace the value below with your free Access Key from https://web3forms.com/
-      access_key: "YOUR_WEB3FORMS_ACCESS_KEY_HERE", 
-      subject: `Portfolio Contact from ${formData.name}: ${formData.subject}`
-    };
+    // Replace the key below with your Web3Forms Access Key
+    const accessKey = "YOUR_WEB3FORMS_ACCESS_KEY";
+
+    if (accessKey === "YOUR_WEB3FORMS_ACCESS_KEY") {
+      setStatus("Error: Please provide a valid Web3Forms access key.");
+      return;
+    }
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
@@ -36,8 +36,15 @@ const Contact = () => {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
-        body: JSON.stringify(object),
+        body: JSON.stringify({
+          access_key: accessKey,
+          name: formData.name,
+          email: formData.email,
+          subject: `Portfolio Contact: ${formData.subject}`,
+          message: formData.message,
+        }),
       });
+
       const result = await response.json();
       if (result.success) {
         setStatus("Message sent successfully!");
@@ -160,7 +167,7 @@ const Contact = () => {
             </div>
             
             {status && (
-              <p className={`text-sm ${status.includes('success') ? 'text-green-400' : 'text-accent'}`}>
+              <p className={`text-sm ${status.includes('successfully') ? 'text-green-400' : 'text-accent'}`}>
                 {status}
               </p>
             )}

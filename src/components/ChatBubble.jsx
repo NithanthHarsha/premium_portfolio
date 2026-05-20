@@ -4,6 +4,49 @@ import { FiMessageSquare, FiX, FiSend } from 'react-icons/fi';
 
 const ChatBubble = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [status, setStatus] = useState('idle');
+
+  const handleSendMessage = async () => {
+    if (!message.trim()) return;
+    setStatus('sending');
+
+    // Replace the key below with your Web3Forms Access Key
+    const accessKey = "YOUR_WEB3FORMS_ACCESS_KEY";
+
+    if (accessKey === "YOUR_WEB3FORMS_ACCESS_KEY") {
+      setStatus('error');
+      setTimeout(() => setStatus('idle'), 3000);
+      return;
+    }
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: accessKey,
+          subject: "New Chat Message from Portfolio",
+          message: message,
+        }),
+      });
+      
+      if (response.ok) {
+        setStatus('sent');
+        setMessage('');
+        setTimeout(() => setStatus('idle'), 3000);
+      } else {
+        setStatus('error');
+        setTimeout(() => setStatus('idle'), 3000);
+      }
+    } catch (error) {
+      setStatus('error');
+      setTimeout(() => setStatus('idle'), 3000);
+    }
+  };
 
   return (
     <div className="fixed bottom-8 right-8 z-50">
@@ -34,6 +77,16 @@ const ChatBubble = () => {
                 <div className="bg-dark-100 p-3 rounded-2xl rounded-tl-sm text-sm text-gray-300 w-[85%]">
                   Hi there! 👋 I'm Nithanth. How can I help you today?
                 </div>
+                {status === 'sent' && (
+                  <div className="bg-accent/20 border border-accent/30 p-3 rounded-2xl rounded-tr-sm text-sm text-white self-end text-right w-[85%]">
+                    Message sent successfully! I'll get back to you soon.
+                  </div>
+                )}
+                {status === 'error' && (
+                  <div className="bg-red-500/20 border border-red-500/30 p-3 rounded-2xl rounded-tr-sm text-sm text-white self-end text-right w-[85%]">
+                    Failed to send message. Please try again.
+                  </div>
+                )}
               </div>
             </div>
 
@@ -41,10 +94,18 @@ const ChatBubble = () => {
               <div className="relative">
                 <input 
                   type="text" 
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
                   placeholder="Type a message..." 
-                  className="w-full bg-dark-200 border border-white/10 rounded-full pl-4 pr-12 py-2.5 text-sm text-white focus:outline-none focus:border-accent/50 transition-colors"
+                  disabled={status === 'sending'}
+                  className="w-full bg-dark-200 border border-white/10 rounded-full pl-4 pr-12 py-2.5 text-sm text-white focus:outline-none focus:border-accent/50 transition-colors disabled:opacity-50"
                 />
-                <button className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-accent flex items-center justify-center text-white hover:bg-accent-hover transition-colors">
+                <button 
+                  onClick={handleSendMessage}
+                  disabled={status === 'sending' || !message.trim()}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-accent flex items-center justify-center text-white hover:bg-accent-hover transition-colors disabled:opacity-50"
+                >
                   <FiSend size={14} />
                 </button>
               </div>
