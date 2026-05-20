@@ -12,7 +12,7 @@ const ChatBubble = () => {
     setStatus('sending');
 
     // Replace the key below with your Web3Forms Access Key
-    const accessKey = "YOUR_WEB3FORMS_ACCESS_KEY";
+    const accessKey = "ad6c2ade-cf19-4e1b-9052-1e90c7a45e43";
 
     if (accessKey === "YOUR_WEB3FORMS_ACCESS_KEY") {
       setStatus('error');
