@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-dark-300 text-gray-200 font-sans antialiased overflow-x-hidden;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display text-white font-bold;
+  }
+}
+
+@layer components {
+  .section-container {
+    @apply w-full max-w-7xl mx-auto px-4 sm:px-6 py-16 md:py-28 overflow-hidden;
+  }
+
+  .glass-card {
+    @apply bg-dark-200/95 border border-white/5 rounded-2xl shadow-xl transition-all duration-300;
+  }
+
+  .btn-primary {
+    @apply px-6 py-3 rounded-full bg-accent text-white font-medium tracking-wide 
+           hover:bg-accent-hover hover:shadow-[0_0_15px_rgba(255,71,87,0.5)] 
+           transition-all duration-300 flex items-center justify-center gap-2;
+  }
+
+  .btn-outline {
+    @apply px-6 py-3 rounded-full border border-accent text-accent font-medium tracking-wide 
+           hover:bg-accent/10 hover:shadow-[0_0_15px_rgba(255,71,87,0.2)] 
+           transition-all duration-300 flex items-center justify-center gap-2;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0b0b0e;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e1e24;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ff4757;
+}
+
+/* Glassmorphism gradient backgrounds */
+.bg-glow {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255,71,87,0.15) 0%, rgba(11,11,14,0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform;
+  transform: translateZ(0);
+}
